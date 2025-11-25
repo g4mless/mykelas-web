@@ -89,7 +89,7 @@ export default function VerifyOtpRoute() {
               required
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              className="w-full rounded-2xl border border-gray-200 px-4 py-3 text-base focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
+              className="w-full rounded-2xl border border-gray-200 px-4 py-3 text-base text-slate-900 placeholder:text-slate-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
             />
           </label>
 
@@ -102,7 +102,7 @@ export default function VerifyOtpRoute() {
               required
               value={token}
               onChange={(event) => setToken(event.target.value.replace(/[^0-9]/g, ""))}
-              className="tracking-[0.5em] text-center text-2xl font-semibold w-full rounded-2xl border border-gray-200 px-4 py-3 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
+              className="tracking-[0.5em] text-center text-2xl font-semibold w-full rounded-2xl border border-gray-200 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
             />
           </label>
 
