@@ -19,6 +19,9 @@ export interface Student {
   user_id?: string | null;
   last_status?: AttendanceStatus | null;
   last_date?: string | null;
+  class?: {
+    class_name: string;
+  } | null;
 }
 
 export interface AttendanceResponse {
