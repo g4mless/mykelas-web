@@ -111,13 +111,7 @@ export default function DashboardRoute() {
   const lastDate = todayAttendance?.date ?? null;
 
   return (
-    <section className="space-y-8">
-      <div className="rounded-3xl bg-gradient-to-br from-sky-600 to-blue-600 p-6 text-white">
-        <p className="text-sm uppercase tracking-[0.3em] text-white/70">Hari ini</p>
-        <h2 className="mt-2 text-3xl font-semibold">{today}</h2>
-        <p className="mt-4 text-lg text-white/90">Selamat belajar, {student?.nama}!</p>
-      </div>
-
+    <>
       <div className="grid gap-6 md:grid-cols-2">
         <div className="rounded-3xl bg-white p-6 shadow-sm">
           <div className="flex items-center justify-between">
@@ -184,6 +178,6 @@ export default function DashboardRoute() {
           )}
         </div>
       </div>
-    </section>
+    </>
   );
 }
