@@ -1,7 +1,11 @@
 "use client";
 
+import { useState } from "react";
+import { useNavigate } from "react-router";
+
 import type { Route } from "./+types/profile";
 import { useStudent } from "../providers/student-provider";
+import { useAuth } from "../providers/auth-provider";
 
 const formatBirthInfo = (tempat?: string | null, tanggal?: string | null) => {
   if (!tempat && !tanggal) return "-";
@@ -25,6 +29,9 @@ export const meta = ({}: Route.MetaArgs) => {
 };
 
 export default function ProfileRoute() {
+  const navigate = useNavigate();
+  const { signOut } = useAuth();
+  const [isSigningOut, setIsSigningOut] = useState(false);
   const { student } = useStudent();
 
   if (!student) {
@@ -46,11 +53,32 @@ export default function ProfileRoute() {
 
   return (
     <section className="space-y-6">
-      <div className="rounded-3xl bg-white p-6 shadow-sm">
-        <h2 className="text-2xl font-semibold text-slate-900">Profil</h2>
-        <p className="mt-2 text-sm text-slate-500">
-          Informasi pribadi yang diambil dari database Klas.
-        </p>
+      <div className="rounded-3xl bg-white p-6 shadow-sm space-y-4">
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900"
+        >
+          <span aria-hidden>←</span>Kembali
+        </button>
+        <div>
+          <h2 className="text-2xl font-semibold text-slate-900">Profil</h2>
+          <p className="mt-2 text-sm text-slate-500">
+            Informasi pribadi yang diambil dari database Klas.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={async () => {
+            setIsSigningOut(true);
+            await signOut();
+            navigate("/login", { replace: true });
+          }}
+          disabled={isSigningOut}
+          className="inline-flex items-center justify-center rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-rose-600 transition hover:bg-rose-50 disabled:cursor-not-allowed"
+        >
+          {isSigningOut ? "Keluar..." : "Keluar"}
+        </button>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
