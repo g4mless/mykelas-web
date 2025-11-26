@@ -1,6 +1,8 @@
 import type {
   AttendanceResponse,
   AttendanceStatus,
+  ProfilePictureInfo,
+  ProfilePictureUploadResponse,
   Student,
   TodayStatusResponse,
 } from "../types/student";
@@ -19,13 +21,17 @@ const request = async <T>(
   accessToken: string,
   init?: RequestInit,
 ): Promise<T> => {
+  const isFormData = init?.body instanceof FormData;
+
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+    ...(isFormData ? {} : { "Content-Type": "application/json" }),
+    ...init?.headers,
+  } as HeadersInit;
+
   const response = await fetch(`${KLAS_API_URL}${path}`, {
     ...init,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-      ...init?.headers,
-    },
+    headers,
   });
 
   if (!response.ok) {
@@ -69,6 +75,26 @@ export const fetchTodayStatus = (accessToken: string) => {
   return request<TodayStatusResponse>("/today-status", accessToken, {
     method: "GET",
   });
+};
+
+export const fetchProfilePicture = (accessToken: string) => {
+  return request<ProfilePictureInfo>("/students/profile-picture", accessToken, {
+    method: "GET",
+  });
+};
+
+export const uploadProfilePicture = (file: File, accessToken: string) => {
+  const formData = new FormData();
+  formData.append("avatar", file);
+
+  return request<ProfilePictureUploadResponse>(
+    "/students/profile-picture",
+    accessToken,
+    {
+      method: "POST",
+      body: formData,
+    },
+  );
 };
 
 export { KlasApiError };

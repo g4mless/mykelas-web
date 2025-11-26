@@ -49,6 +49,7 @@ export default function ProtectedLayout() {
     isLoading: studentLoading,
     error: studentError,
     refresh,
+    avatarUrl,
   } = useStudent();
 
   useEffect(() => {
@@ -83,15 +84,19 @@ export default function ProtectedLayout() {
       <header className="bg-white/80 backdrop-blur-sm border-b border-slate-200">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-4 py-4">
           <div>
-            <p className="text-sm text-slate-500">Selamat datang kembali</p>
+            <p className="text-sm text-slate-500">MyKelas</p>
             <h1 className="text-xl font-semibold text-slate-900">{student.nama}</h1>
           </div>
           <div className="flex flex-1 items-center justify-end">
             <Link
               to="/profile"
-              className="flex items-center gap-3 transition hover:border-slate-300"
+              className="flex items-center gap-3 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-left shadow-sm transition hover:border-slate-300"
             >
-              <Avatar name={student.nama} />
+              <Avatar name={student.nama} src={avatarUrl} />
+              <div className="hidden text-sm font-medium text-slate-700 sm:block">
+                <p className="leading-tight">Profil</p>
+                <span className="text-xs text-slate-500">Lihat detail</span>
+              </div>
             </Link>
           </div>
         </div>

@@ -19,6 +19,7 @@ export interface Student {
   user_id?: string | null;
   last_status?: AttendanceStatus | null;
   last_date?: string | null;
+  avatar_url?: string | null;
   class?: {
     class_name: string;
   } | null;
@@ -32,4 +33,16 @@ export interface AttendanceResponse {
 export interface TodayStatusResponse {
   has_attendance: boolean;
   attendance?: Attendance;
+}
+
+export interface ProfilePictureInfo {
+  avatar_path: string | null;
+  avatar_url: string | null;
+  expires_in: number;
+}
+
+export interface ProfilePictureUploadResponse {
+  message: string;
+  avatar_path: string | null;
+  avatar_url: string | null;
 }
