@@ -55,6 +55,7 @@ export default function DashboardRoute() {
   const [todayAttendance, setTodayAttendance] = useState<Attendance | null>(null);
   const [todayStatusError, setTodayStatusError] = useState<string | null>(null);
   const [isTodayStatusLoading, setIsTodayStatusLoading] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const today = useMemo(
     () =>
@@ -100,8 +101,8 @@ export default function DashboardRoute() {
     try {
       await submitAttendance(status);
       await loadTodayStatus();
-      setFeedback("Absensi berhasil direkam.");
       setFeedbackTone("success");
+      setIsDialogOpen(false);
     } catch (error) {
       setFeedback((error as Error).message);
       setFeedbackTone("error");
@@ -146,26 +147,17 @@ export default function DashboardRoute() {
 
         <div className="rounded-sm border border-zinc-100 bg-white/90 p-6 shadow-lg shadow-zinc-200/50 transition dark:border-zinc-800 dark:bg-zinc-900/70 dark:shadow-black/30">
           <h3 className="text-xl font-semibold text-zinc-950 dark:text-zinc-50">Presensi Hari Ini</h3>
-          <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">Pilih status kehadiran sesuai kondisi Anda.</p>
+          <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">Catat kehadiran Anda untuk hari ini.</p>
 
-          <div className="mt-6 grid gap-3 sm:grid-cols-3">
-            {attendanceOptions.map((option) => (
-              <button
-                key={option}
+          <div className="mt-6">
+             <button
                 type="button"
-                onClick={() => handleAttendance(option)}
-                disabled={loadingStatus === option}
-                className={`rounded-sm border px-4 py-3 text-sm font-semibold transition ${
-                  option === "HADIR"
-                    ? "border-emerald-200 bg-emerald-50 text-emerald-700 hover:border-emerald-300 dark:border-emerald-500/30 dark:bg-emerald-400/10 dark:text-emerald-200"
-                    : option === "IZIN"
-                    ? "border-amber-200 bg-amber-50 text-amber-700 hover:border-amber-300 dark:border-amber-500/30 dark:bg-amber-400/10 dark:text-amber-200"
-                    : "border-rose-200 bg-rose-50 text-rose-700 hover:border-rose-300 dark:border-rose-500/30 dark:bg-rose-400/10 dark:text-rose-200"
-                } disabled:cursor-not-allowed disabled:opacity-60`}
+                onClick={() => setIsDialogOpen(true)}
+                disabled={!!lastStatus}
+                className="rounded-sm bg-zinc-900 px-6 py-2 text-sm font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-zinc-100 disabled:text-zinc-400 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200 dark:disabled:bg-zinc-800 dark:disabled:text-zinc-500"
               >
-                {loadingStatus === option ? "Menyimpan..." : statusLabels[option]}
+                {lastStatus ? "Sudah Absensi" : "Isi Absensi"}
               </button>
-            ))}
           </div>
 
           {feedback && (
@@ -181,6 +173,51 @@ export default function DashboardRoute() {
           )}
         </div>
       </div>
+
+      {isDialogOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-sm border border-zinc-200 bg-white/95 p-6 shadow-2xl shadow-black/30 dark:border-zinc-700 dark:bg-zinc-900">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-zinc-950 dark:text-zinc-50">Pilih Status Kehadiran</h3>
+              <button
+                type="button"
+                onClick={() => setIsDialogOpen(false)}
+                className="text-zinc-500 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className="grid gap-3">
+              {attendanceOptions.map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  onClick={() => handleAttendance(option)}
+                  disabled={loadingStatus === option}
+                  className={`flex w-full items-center justify-center rounded-sm border px-4 py-4 text-base font-semibold transition ${
+                    option === "HADIR"
+                      ? "border-emerald-200 bg-emerald-50 text-emerald-700 hover:border-emerald-300 dark:border-emerald-500/30 dark:bg-emerald-400/10 dark:text-emerald-200"
+                      : option === "IZIN"
+                      ? "border-amber-200 bg-amber-50 text-amber-700 hover:border-amber-300 dark:border-amber-500/30 dark:bg-amber-400/10 dark:text-amber-200"
+                      : "border-rose-200 bg-rose-50 text-rose-700 hover:border-rose-300 dark:border-rose-500/30 dark:bg-rose-400/10 dark:text-rose-200"
+                  } disabled:cursor-not-allowed disabled:opacity-60`}
+                >
+                  {loadingStatus === option ? "Menyimpan..." : statusLabels[option]}
+                </button>
+              ))}
+            </div>
+            
+            <button
+              type="button"
+              onClick={() => setIsDialogOpen(false)}
+              className="mt-6 w-full rounded-sm border border-zinc-200 px-4 py-2 text-sm font-semibold text-zinc-600 transition hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800/50"
+            >
+              Batal
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 }
