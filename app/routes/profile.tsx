@@ -292,7 +292,7 @@ export default function ProfileRoute() {
                 </div>
               ) : (
                 <div className="flex h-64 items-center justify-center rounded-sm border border-dashed border-zinc-200 text-sm text-zinc-500 dark:border-zinc-700 dark:text-zinc-400">
-                  Upload gambar untuk memulai pengeditan.
+                  Gambar maksimal berukuran 2MB.
                 </div>
               )}
 
