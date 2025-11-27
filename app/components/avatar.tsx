@@ -1,10 +1,10 @@
 "use client";
 
 const palette = [
-  "bg-gradient-to-br from-sky-400 to-blue-600",
-  "bg-gradient-to-br from-purple-400 to-indigo-600",
-  "bg-gradient-to-br from-emerald-400 to-teal-600",
-  "bg-gradient-to-br from-rose-400 to-pink-600",
+  "bg-blue-500",
+  "bg-purple-500",
+  "bg-emerald-500",
+  "bg-rose-500",
 ];
 
 const sizeClasses = {

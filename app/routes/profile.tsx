@@ -183,7 +183,7 @@ export default function ProfileRoute() {
     { label: "NISN", value: student.nisn },
     { label: "Nama", value: student.nama },
     { label: "Kelas", value: student.class?.class_name ?? String(student.kelas) },
-    { label: "TTL", value: formatBirthInfo(student.tempat_lahir, student.tanggal_lahir) },
+    { label: "Tempat & Tanggal Lahir", value: formatBirthInfo(student.tempat_lahir, student.tanggal_lahir) },
     { label: "Alamat", value: student.alamat },
     { label: "Jenis Kelamin", value: student.jenis_kelamin },
   ];

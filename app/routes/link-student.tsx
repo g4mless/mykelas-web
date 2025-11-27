@@ -95,7 +95,7 @@ export default function LinkStudentRoute() {
   }, [normalizedQuery, studentList]);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-zinc-50 via-zinc-100 to-zinc-200 dark:from-zinc-950 dark:via-zinc-900 dark:to-black flex items-center justify-center px-4 py-10 transition-colors">
+    <main className="min-h-screen bg-zinc-100 dark:bg-zinc-950 flex items-center justify-center px-4 py-10 transition-colors">
       <div className="w-full max-w-2xl rounded-3xl border border-zinc-200 bg-white/95 p-8 shadow-2xl shadow-zinc-200/70 backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/80 dark:shadow-black/40 space-y-8">
         <div className="flex flex-col gap-2">
           <p className="text-sm uppercase tracking-[0.3em] text-zinc-500 dark:text-zinc-400">Step 02</p>
