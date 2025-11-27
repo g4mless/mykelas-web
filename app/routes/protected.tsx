@@ -90,13 +90,9 @@ export default function ProtectedLayout() {
           <div className="flex flex-1 items-center justify-end">
             <Link
               to="/profile"
-              className="flex items-center gap-3 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-left shadow-sm transition hover:border-slate-300"
+              className="flex items-center gap-3 rounded-full transition hover:border-slate-300"
             >
               <Avatar name={student.nama} src={avatarUrl} />
-              <div className="hidden text-sm font-medium text-slate-700 sm:block">
-                <p className="leading-tight">Profil</p>
-                <span className="text-xs text-slate-500">Lihat detail</span>
-              </div>
             </Link>
           </div>
         </div>

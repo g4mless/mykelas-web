@@ -200,15 +200,11 @@ export default function ProfileRoute() {
         </button>
         <div>
           <h2 className="text-2xl font-semibold text-slate-900">Profil</h2>
-          <p className="mt-2 text-sm text-slate-500">
-            Informasi pribadi yang diambil dari database Klas.
-          </p>
         </div>
 
         <div className="rounded-2xl border border-slate-100 p-4 flex flex-col gap-4 sm:flex-row sm:items-center">
           <Avatar name={student.nama} src={previewUrl} size="lg" />
           <div className="flex-1 space-y-2">
-            <p className="text-sm text-slate-600">Perbarui foto profil Anda agar lebih mudah dikenali.</p>
             <button
               type="button"
               onClick={openDialog}

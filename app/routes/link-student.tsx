@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 
 import type { Route } from "./+types/link-student";
 import { useAuth } from "../providers/auth-provider";
 import { useStudent } from "../providers/student-provider";
+import { fetchStudents } from "../lib/klas-api";
+import type { Student } from "../types/student";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -30,6 +32,11 @@ export default function LinkStudentRoute() {
   const [formError, setFormError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [studentList, setStudentList] = useState<Student[]>([]);
+  const [isLoadingList, setIsLoadingList] = useState(false);
+  const [listError, setListError] = useState<string | null>(null);
+
+  const accessToken = session?.access_token ?? null;
 
   useEffect(() => {
     if (!authLoading && !session) {
@@ -42,6 +49,24 @@ export default function LinkStudentRoute() {
       navigate("/", { replace: true });
     }
   }, [student, studentLoading, navigate]);
+
+  useEffect(() => {
+    const loadCandidates = async () => {
+      if (!accessToken) return;
+      setIsLoadingList(true);
+      setListError(null);
+      try {
+        const list = await fetchStudents(accessToken);
+        setStudentList(list);
+      } catch (error) {
+        setListError((error as Error).message);
+      } finally {
+        setIsLoadingList(false);
+      }
+    };
+
+    loadCandidates();
+  }, [accessToken]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -61,6 +86,13 @@ export default function LinkStudentRoute() {
   };
 
   const email = session?.user.email ?? "";
+  const normalizedQuery = fullName.trim().toLowerCase();
+  const suggestions = useMemo(() => {
+    if (!normalizedQuery || normalizedQuery.length < 2) return [] as Student[];
+    return studentList
+      .filter((candidate) => candidate.nama.toLowerCase().includes(normalizedQuery))
+      .slice(0, 5);
+  }, [normalizedQuery, studentList]);
 
   return (
     <main className="min-h-screen bg-slate-950 text-white flex items-center justify-center px-4 py-10">
@@ -85,6 +117,36 @@ export default function LinkStudentRoute() {
               className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 text-base text-white placeholder:text-slate-500 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/30"
             />
           </label>
+
+          {listError && (
+            <p className="rounded-2xl bg-red-500/10 px-4 py-3 text-sm text-red-200">
+              {listError}
+            </p>
+          )}
+
+          {isLoadingList && (
+            <p className="text-sm text-slate-400">Memuat daftar siswa...</p>
+          )}
+
+          {!isLoadingList && suggestions.length > 0 && (
+            <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-3 space-y-2">
+              <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Saran nama</p>
+              <ul className="space-y-2">
+                {suggestions.map((candidate) => (
+                  <li key={candidate.id}>
+                    <button
+                      type="button"
+                      onClick={() => setFullName(candidate.nama)}
+                      className="w-full rounded-2xl border border-slate-800 px-4 py-2 text-left text-sm text-white transition hover:border-sky-500"
+                    >
+                      <span className="font-semibold">{candidate.nama}</span>
+                      <span className="block text-xs text-slate-400">Kelas {candidate.class?.class_name ?? candidate.kelas}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {formError && (
             <p className="rounded-2xl bg-red-500/10 px-4 py-3 text-sm text-red-200">
