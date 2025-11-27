@@ -116,7 +116,7 @@ export default function DashboardRoute() {
   return (
     <>
       <div className="grid gap-6 md:grid-cols-2">
-        <div className="rounded-3xl border border-zinc-100 bg-white/90 p-6 shadow-lg shadow-zinc-200/50 transition dark:border-zinc-800 dark:bg-zinc-900/70 dark:shadow-black/30">
+        <div className="rounded-sm border border-zinc-100 bg-white/90 p-6 shadow-lg shadow-zinc-200/50 transition dark:border-zinc-800 dark:bg-zinc-900/70 dark:shadow-black/30">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-zinc-500">Status terakhir</p>
@@ -129,7 +129,7 @@ export default function DashboardRoute() {
               </h3>
             </div>
             {lastStatus && !isTodayStatusLoading && (
-              <span className={`rounded-full border px-4 py-2 text-sm font-medium ${statusStyles[lastStatus]}`}>
+              <span className={`rounded-sm border px-4 py-2 text-sm font-medium ${statusStyles[lastStatus]}`}>
                 {statusLabels[lastStatus]}
               </span>
             )}
@@ -138,13 +138,13 @@ export default function DashboardRoute() {
             Terakhir diperbarui: {isTodayStatusLoading ? "Memuat status..." : formatDate(lastDate)}
           </p>
           {todayStatusError && (
-            <p className="mt-3 rounded-2xl border border-rose-200/40 bg-rose-50/90 px-4 py-2 text-sm text-rose-700 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-200">
+            <p className="mt-3 rounded-sm border border-rose-200/40 bg-rose-50/90 px-4 py-2 text-sm text-rose-700 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-200">
               {todayStatusError}
             </p>
           )}
         </div>
 
-        <div className="rounded-3xl border border-zinc-100 bg-white/90 p-6 shadow-lg shadow-zinc-200/50 transition dark:border-zinc-800 dark:bg-zinc-900/70 dark:shadow-black/30">
+        <div className="rounded-sm border border-zinc-100 bg-white/90 p-6 shadow-lg shadow-zinc-200/50 transition dark:border-zinc-800 dark:bg-zinc-900/70 dark:shadow-black/30">
           <h3 className="text-xl font-semibold text-zinc-950 dark:text-zinc-50">Presensi Hari Ini</h3>
           <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">Pilih status kehadiran sesuai kondisi Anda.</p>
 
@@ -155,7 +155,7 @@ export default function DashboardRoute() {
                 type="button"
                 onClick={() => handleAttendance(option)}
                 disabled={loadingStatus === option}
-                className={`rounded-2xl border px-4 py-3 text-sm font-semibold transition ${
+                className={`rounded-sm border px-4 py-3 text-sm font-semibold transition ${
                   option === "HADIR"
                     ? "border-emerald-200 bg-emerald-50 text-emerald-700 hover:border-emerald-300 dark:border-emerald-500/30 dark:bg-emerald-400/10 dark:text-emerald-200"
                     : option === "IZIN"
@@ -170,7 +170,7 @@ export default function DashboardRoute() {
 
           {feedback && (
             <p
-              className={`mt-4 rounded-2xl px-4 py-3 text-sm ${
+              className={`mt-4 rounded-sm px-4 py-3 text-sm ${
                 feedbackTone === "success"
                   ? "border border-emerald-200/40 bg-emerald-50/90 text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-400/10 dark:text-emerald-200"
                   : "border border-rose-200/40 bg-rose-50/90 text-rose-700 dark:border-rose-500/30 dark:bg-rose-400/10 dark:text-rose-200"

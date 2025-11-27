@@ -70,7 +70,7 @@ export default function VerifyOtpRoute() {
 
   return (
     <main className="min-h-screen bg-zinc-100 dark:bg-zinc-950 flex items-center justify-center px-4 py-10 transition-colors">
-      <div className="w-full max-w-md rounded-3xl border border-zinc-200 bg-white/90 p-8 shadow-2xl shadow-zinc-200/60 backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/80 dark:shadow-black/40">
+      <div className="w-full max-w-md rounded-sm border border-zinc-200 bg-white/90 p-8 shadow-2xl shadow-zinc-200/60 backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/80 dark:shadow-black/40">
         <section>
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-purple-500">
             Verifikasi OTP
@@ -89,7 +89,7 @@ export default function VerifyOtpRoute() {
               required
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              className="w-full rounded-2xl border border-zinc-200 bg-white/80 px-4 py-3 text-base text-zinc-900 placeholder:text-zinc-400 transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 dark:border-zinc-700 dark:bg-zinc-900/30 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+              className="w-full rounded-sm border border-zinc-200 bg-white/80 px-4 py-3 text-base text-zinc-900 placeholder:text-zinc-400 transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 dark:border-zinc-700 dark:bg-zinc-900/30 dark:text-zinc-100 dark:placeholder:text-zinc-500"
             />
           </label>
 
@@ -102,12 +102,12 @@ export default function VerifyOtpRoute() {
               required
               value={token}
               onChange={(event) => setToken(event.target.value.replace(/[^0-9]/g, ""))}
-              className="tracking-[0.5em] text-center text-2xl font-semibold w-full rounded-2xl border border-zinc-200 bg-white/80 px-4 py-3 text-zinc-900 placeholder:text-zinc-400 transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 dark:border-zinc-700 dark:bg-zinc-900/30 dark:text-zinc-50 dark:placeholder:text-zinc-500"
+              className="tracking-[0.5em] text-center text-2xl font-semibold w-full rounded-sm border border-zinc-200 bg-white/80 px-4 py-3 text-zinc-900 placeholder:text-zinc-400 transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 dark:border-zinc-700 dark:bg-zinc-900/30 dark:text-zinc-50 dark:placeholder:text-zinc-500"
             />
           </label>
 
           {formError && (
-            <p className="rounded-2xl border border-red-200/40 bg-red-50/80 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200">
+            <p className="rounded-sm border border-red-200/40 bg-red-50/80 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200">
               {formError}
             </p>
           )}
@@ -115,7 +115,7 @@ export default function VerifyOtpRoute() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full rounded-2xl bg-purple-600 py-3 text-base font-semibold text-white transition hover:bg-purple-500 disabled:cursor-not-allowed disabled:opacity-70 dark:bg-purple-500 dark:hover:bg-purple-400"
+            className="w-full rounded-sm bg-purple-600 py-3 text-base font-semibold text-white transition hover:bg-purple-500 disabled:cursor-not-allowed disabled:opacity-70 dark:bg-purple-500 dark:hover:bg-purple-400"
           >
             {isSubmitting ? "Memverifikasi..." : "Masuk"}
           </button>

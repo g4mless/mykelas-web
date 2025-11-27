@@ -96,7 +96,7 @@ export default function LinkStudentRoute() {
 
   return (
     <main className="min-h-screen bg-zinc-100 dark:bg-zinc-950 flex items-center justify-center px-4 py-10 transition-colors">
-      <div className="w-full max-w-2xl rounded-3xl border border-zinc-200 bg-white/95 p-8 shadow-2xl shadow-zinc-200/70 backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/80 dark:shadow-black/40 space-y-8">
+      <div className="w-full max-w-2xl rounded-sm border border-zinc-200 bg-white/95 p-8 shadow-2xl shadow-zinc-200/70 backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/80 dark:shadow-black/40 space-y-8">
         <div className="flex flex-col gap-2">
           <p className="text-sm uppercase tracking-[0.3em] text-zinc-500 dark:text-zinc-400">Step 02</p>
           <h1 className="text-3xl font-semibold text-zinc-950 dark:text-zinc-50">Tautkan Akun Siswa</h1>
@@ -114,12 +114,12 @@ export default function LinkStudentRoute() {
               value={fullName}
               onChange={(event) => setFullName(event.target.value)}
               placeholder="Tuliskan sesuai ijazah"
-              className="w-full rounded-2xl border border-zinc-300 bg-white/70 px-4 py-3 text-base text-zinc-900 placeholder:text-zinc-400 shadow-inner transition focus:border-sky-500 focus:ring-2 focus:ring-sky-500/30 dark:border-zinc-700 dark:bg-zinc-900/40 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+              className="w-full rounded-sm border border-zinc-300 bg-white/70 px-4 py-3 text-base text-zinc-900 placeholder:text-zinc-400 shadow-inner transition focus:border-sky-500 focus:ring-2 focus:ring-sky-500/30 dark:border-zinc-700 dark:bg-zinc-900/40 dark:text-zinc-100 dark:placeholder:text-zinc-500"
             />
           </label>
 
           {listError && (
-            <p className="rounded-2xl border border-red-200/40 bg-red-500/10 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:text-red-200">
+            <p className="rounded-sm border border-red-200/40 bg-red-500/10 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:text-red-200">
               {listError}
             </p>
           )}
@@ -129,7 +129,7 @@ export default function LinkStudentRoute() {
           )}
 
           {!isLoadingList && suggestions.length > 0 && (
-            <div className="rounded-3xl border border-zinc-200 bg-white/80 p-3 space-y-2 dark:border-zinc-800 dark:bg-zinc-900/40">
+            <div className="rounded-sm border border-zinc-200 bg-white/80 p-3 space-y-2 dark:border-zinc-800 dark:bg-zinc-900/40">
               <p className="text-xs uppercase tracking-[0.3em] text-zinc-500">Saran nama</p>
               <ul className="space-y-2">
                 {suggestions.map((candidate) => (
@@ -137,7 +137,7 @@ export default function LinkStudentRoute() {
                     <button
                       type="button"
                       onClick={() => setFullName(candidate.nama)}
-                      className="w-full rounded-2xl border border-zinc-200 bg-white/70 px-4 py-2 text-left text-sm text-zinc-900 transition hover:border-sky-400 dark:border-zinc-700 dark:bg-zinc-900/40 dark:text-zinc-100"
+                      className="w-full rounded-sm border border-zinc-200 bg-white/70 px-4 py-2 text-left text-sm text-zinc-900 transition hover:border-sky-400 dark:border-zinc-700 dark:bg-zinc-900/40 dark:text-zinc-100"
                     >
                       <span className="font-semibold">{candidate.nama}</span>
                       <span className="block text-xs text-zinc-500">Kelas {candidate.class?.class_name ?? candidate.kelas}</span>
@@ -149,13 +149,13 @@ export default function LinkStudentRoute() {
           )}
 
           {formError && (
-            <p className="rounded-2xl border border-red-200/40 bg-red-500/10 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:text-red-200">
+            <p className="rounded-sm border border-red-200/40 bg-red-500/10 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:text-red-200">
               {formError}
             </p>
           )}
 
           {successMessage && (
-            <p className="rounded-2xl border border-emerald-200/40 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-500/30 dark:text-emerald-200">
+            <p className="rounded-sm border border-emerald-200/40 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-500/30 dark:text-emerald-200">
               {successMessage}
             </p>
           )}
@@ -164,7 +164,7 @@ export default function LinkStudentRoute() {
             <button
               type="submit"
               disabled={isSubmitting || studentLoading || !fullName.trim()}
-              className="flex-1 rounded-2xl bg-sky-600 py-3 text-base font-semibold text-white transition hover:bg-sky-500 disabled:cursor-not-allowed disabled:opacity-70 dark:bg-sky-500 dark:hover:bg-sky-400"
+              className="flex-1 rounded-sm bg-sky-600 py-3 text-base font-semibold text-white transition hover:bg-sky-500 disabled:cursor-not-allowed disabled:opacity-70 dark:bg-sky-500 dark:hover:bg-sky-400"
             >
               {isSubmitting ? "Menghubungkan..." : "Hubungkan Akun"}
             </button>
@@ -174,7 +174,7 @@ export default function LinkStudentRoute() {
                 await signOut();
                 navigate("/login", { replace: true });
               }}
-              className="rounded-2xl border border-zinc-300 px-5 py-3 text-base font-semibold text-zinc-700 transition hover:border-zinc-400 dark:border-zinc-700 dark:text-zinc-100 dark:hover:border-zinc-500"
+              className="rounded-sm border border-zinc-300 px-5 py-3 text-base font-semibold text-zinc-700 transition hover:border-zinc-400 dark:border-zinc-700 dark:text-zinc-100 dark:hover:border-zinc-500"
             >
               Keluar
             </button>

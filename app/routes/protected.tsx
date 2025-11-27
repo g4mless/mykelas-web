@@ -20,19 +20,19 @@ export const meta = ({}: Route.MetaArgs) => {
 
 const FullPageLoader = () => (
   <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-zinc-950">
-    <div className="h-12 w-12 animate-spin rounded-full border-4 border-zinc-200 border-t-sky-500 dark:border-zinc-800" />
+    <div className="h-12 w-12 animate-spin rounded-sm border-4 border-zinc-200 border-t-sky-500 dark:border-zinc-800" />
   </div>
 );
 
 const ErrorState = ({ message, onRetry }: { message: string; onRetry: () => Promise<void> | void }) => (
   <div className="min-h-screen bg-zinc-50 flex items-center justify-center px-4 dark:bg-zinc-950">
-    <div className="max-w-md space-y-4 rounded-3xl border border-zinc-200 bg-white/95 p-8 text-center shadow-lg shadow-zinc-200/60 dark:border-zinc-800 dark:bg-zinc-900/70 dark:shadow-black/40">
+    <div className="max-w-md space-y-4 rounded-sm border border-zinc-200 bg-white/95 p-8 text-center shadow-lg shadow-zinc-200/60 dark:border-zinc-800 dark:bg-zinc-900/70 dark:shadow-black/40">
       <p className="text-lg font-semibold text-rose-600">Gagal memuat data siswa</p>
       <p className="text-sm text-zinc-600 dark:text-zinc-300">{message}</p>
       <button
         type="button"
         onClick={onRetry}
-        className="rounded-full bg-rose-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-rose-500"
+        className="rounded-sm bg-rose-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-rose-500"
       >
         Coba lagi
       </button>
@@ -90,7 +90,7 @@ export default function ProtectedLayout() {
           <div className="flex flex-1 items-center justify-end">
             <Link
               to="/profile"
-              className="flex items-center gap-3 rounded-full border border-transparent px-2 py-1 transition hover:border-zinc-200 dark:hover:border-zinc-700"
+              className="flex items-center gap-3 rounded-sm border border-transparent px-2 py-1 transition hover:border-zinc-200 dark:hover:border-zinc-700"
             >
               <Avatar name={student.nama} src={avatarUrl} />
             </Link>

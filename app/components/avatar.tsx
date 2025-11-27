@@ -40,7 +40,7 @@ export function Avatar({
     return (
       <img
         src={src}
-        alt={`Foto ${name}`}
+        alt={`${name}`}
         className={`rounded-full object-cover ${sizeClass}`}
       />
     );
@@ -49,7 +49,7 @@ export function Avatar({
   return (
     <div
       aria-hidden
-      className={`${colorClass} flex items-center justify-center rounded-full font-semibold text-white shadow-inner ${sizeClass}`}
+      className={`${colorClass} flex items-center justify-center rounded-sm font-semibold text-white shadow-inner ${sizeClass}`}
     >
       {initials || "S"}
     </div>

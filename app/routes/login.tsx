@@ -47,7 +47,7 @@ export default function LoginRoute() {
 
   return (
     <main className="min-h-screen bg-zinc-100 dark:bg-zinc-950 flex items-center justify-center px-4 py-10 transition-colors">
-      <div className="w-full max-w-md rounded-3xl border border-zinc-200 bg-white/90 p-8 shadow-2xl shadow-zinc-200/60 backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/80 dark:shadow-black/40">
+      <div className="w-full max-w-md rounded-sm border border-zinc-200 bg-white/90 p-8 shadow-2xl shadow-zinc-200/60 backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/80 dark:shadow-black/40">
         <section>
           <p className="text-sm font-semibold uppercase tracking-widest text-sky-600">
             Klas Student Portal
@@ -67,12 +67,12 @@ export default function LoginRoute() {
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               placeholder="halo@mail.com"
-              className="w-full rounded-2xl border border-zinc-200 bg-white/80 px-4 py-3 text-base text-zinc-900 placeholder:text-zinc-400 shadow-inner transition focus:border-sky-500 focus:ring-2 focus:ring-sky-500/30 dark:border-zinc-700 dark:bg-zinc-900/30 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+              className="w-full rounded-sm border border-zinc-200 bg-white/80 px-4 py-3 text-base text-zinc-900 placeholder:text-zinc-400 shadow-inner transition focus:border-sky-500 focus:ring-2 focus:ring-sky-500/30 dark:border-zinc-700 dark:bg-zinc-900/30 dark:text-zinc-100 dark:placeholder:text-zinc-500"
             />
           </label>
 
           {formError && (
-            <p className="rounded-2xl border border-red-200/40 bg-red-50/80 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200">
+            <p className="rounded-sm border border-red-200/40 bg-red-50/80 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200">
               {formError}
             </p>
           )}
@@ -80,7 +80,7 @@ export default function LoginRoute() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full rounded-2xl bg-sky-600 py-3 text-base font-semibold text-white transition hover:bg-sky-500 disabled:cursor-not-allowed disabled:opacity-70 dark:bg-sky-500 dark:hover:bg-sky-400"
+            className="w-full rounded-sm bg-sky-600 py-3 text-base font-semibold text-white transition hover:bg-sky-500 disabled:cursor-not-allowed disabled:opacity-70 dark:bg-sky-500 dark:hover:bg-sky-400"
           >
             {isSubmitting ? "Mengirim..." : "Login"}
           </button>
