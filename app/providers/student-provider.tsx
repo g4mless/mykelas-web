@@ -47,7 +47,8 @@ export const StudentProvider = ({
 }) => {
   const { session } = useAuth();
   const [student, setStudent] = useState<Student | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
+  const [loadedUserId, setLoadedUserId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [isAvatarLoading, setIsAvatarLoading] = useState(false);
@@ -56,17 +57,22 @@ export const StudentProvider = ({
   const accessToken = session?.access_token ?? null;
   const userId = session?.user.id ?? null;
 
+  // isLoading is true if we are actively fetching OR if the loaded data corresponds to a different user (or no user yet)
+  const isLoading = isFetching || (userId !== loadedUserId);
+
   const loadStudent = useCallback(async () => {
+    // If no session, we are "done" loading (nothing to load)
     if (!accessToken || !userId) {
       setStudent(null);
       setError(null);
       setAvatarUrl(null);
       setAvatarError(null);
-      setIsLoading(false);
+      setLoadedUserId(null);
+      setIsFetching(false);
       return;
     }
 
-    setIsLoading(true);
+    setIsFetching(true);
     setError(null);
 
     try {
@@ -79,7 +85,8 @@ export const StudentProvider = ({
       setStudent(null);
       setAvatarUrl(null);
     } finally {
-      setIsLoading(false);
+      setIsFetching(false);
+      setLoadedUserId(userId);
     }
   }, [accessToken, userId]);
 

@@ -2,35 +2,18 @@
 
 import {
   createContext,
-  useCallback,
   useContext,
   useEffect,
-  useMemo,
   useState,
 } from "react";
 
-type ThemePreference = "light" | "dark" | "system";
 type ResolvedTheme = "light" | "dark";
 
 interface ThemeContextValue {
-  theme: ThemePreference;
   resolvedTheme: ResolvedTheme;
-  setTheme: (theme: ThemePreference) => void;
-  toggleTheme: () => void;
 }
 
-const STORAGE_KEY = "mykelas-theme";
-
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
-
-const getInitialPreference = (): ThemePreference => {
-  if (typeof window === "undefined") return "system";
-  const stored = window.localStorage.getItem(STORAGE_KEY);
-  if (stored === "light" || stored === "dark" || stored === "system") {
-    return stored;
-  }
-  return "system";
-};
 
 const getSystemTheme = (): ResolvedTheme => {
   if (typeof window === "undefined") return "light";
@@ -38,63 +21,45 @@ const getSystemTheme = (): ResolvedTheme => {
 };
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setTheme] = useState<ThemePreference>(() => getInitialPreference());
   const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(() => getSystemTheme());
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    
+    const applyTheme = (theme: ResolvedTheme) => {
+        const root = document.documentElement;
+        root.classList.remove("light", "dark");
+        root.classList.add(theme);
+        root.dataset.theme = theme;
+        root.style.setProperty("color-scheme", theme);
+        setResolvedTheme(theme);
+    };
+
+    // Initial apply
+    applyTheme(getSystemTheme());
 
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    const root = window.document.documentElement;
 
-    const applyTheme = (preference: ThemePreference) => {
-      const nextTheme = preference === "system" ? (mediaQuery.matches ? "dark" : "light") : preference;
-      setResolvedTheme(nextTheme);
-      root.classList.remove("light", "dark");
-      root.classList.add(nextTheme);
-      root.dataset.theme = nextTheme;
-      root.style.setProperty("color-scheme", nextTheme);
+    const handleChange = () => {
+        applyTheme(getSystemTheme());
     };
 
-    applyTheme(theme);
-    window.localStorage.setItem(STORAGE_KEY, theme);
+    if (typeof mediaQuery.addEventListener === "function") {
+      mediaQuery.addEventListener("change", handleChange);
+    } else {
+      mediaQuery.addListener(handleChange);
+    }
 
-    const handleChange = (event: MediaQueryListEvent) => {
-      if (theme !== "system") return;
-      const nextTheme = event.matches ? "dark" : "light";
-      setResolvedTheme(nextTheme);
-      root.classList.remove("light", "dark");
-      root.classList.add(nextTheme);
-      root.dataset.theme = nextTheme;
-      root.style.setProperty("color-scheme", nextTheme);
-    };
-
-    mediaQuery.addEventListener("change", handleChange);
     return () => {
-      mediaQuery.removeEventListener("change", handleChange);
+      if (typeof mediaQuery.removeEventListener === "function") {
+        mediaQuery.removeEventListener("change", handleChange);
+      } else {
+        mediaQuery.removeListener(handleChange);
+      }
     };
-  }, [theme]);
-
-  const setThemePreference = useCallback((next: ThemePreference) => {
-    setTheme(next);
   }, []);
 
-  const toggleTheme = useCallback(() => {
-    setTheme((current) => {
-      const base = current === "system" ? resolvedTheme : current;
-      return base === "dark" ? "light" : "dark";
-    });
-  }, [resolvedTheme]);
-
-  const value = useMemo<ThemeContextValue>(
-    () => ({
-      theme,
-      resolvedTheme,
-      setTheme: setThemePreference,
-      toggleTheme,
-    }),
-    [theme, resolvedTheme, setThemePreference, toggleTheme],
-  );
+  const value = { resolvedTheme };
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };

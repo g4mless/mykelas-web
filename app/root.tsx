@@ -12,7 +12,6 @@ import "./app.css";
 import { AuthProvider } from "./providers/auth-provider";
 import { StudentProvider } from "./providers/student-provider";
 import { ThemeProvider } from "./providers/theme-provider";
-import { ThemeToggle } from "./components/theme-toggle";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -48,9 +47,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <ThemeProvider>
-      <div className="fixed right-4 top-4 z-50">
-        <ThemeToggle />
-      </div>
       <AuthProvider>
         <StudentProvider>
           <Outlet />

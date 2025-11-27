@@ -198,7 +198,7 @@ export default function ProfileRoute() {
         >
           <span aria-hidden>←</span>Kembali
         </button>
-        <div>
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-2xl font-semibold text-zinc-950 dark:text-zinc-50">Profil</h2>
         </div>
 
