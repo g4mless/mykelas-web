@@ -153,10 +153,10 @@ export default function DashboardRoute() {
              <button
                 type="button"
                 onClick={() => setIsDialogOpen(true)}
-                disabled={!!lastStatus}
+                disabled={!!todayAttendance}
                 className="rounded-sm bg-zinc-900 px-6 py-2 text-sm font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-zinc-100 disabled:text-zinc-400 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200 dark:disabled:bg-zinc-800 dark:disabled:text-zinc-500"
               >
-                {lastStatus ? "Sudah Absensi" : "Isi Absensi"}
+                {todayAttendance ? "Sudah Absensi" : "Isi Absensi"}
               </button>
           </div>
 
