@@ -15,9 +15,12 @@ const statusLabels: Record<AttendanceStatus, string> = {
 };
 
 const statusStyles: Record<AttendanceStatus, string> = {
-  HADIR: "bg-emerald-50 text-emerald-800 border-emerald-200",
-  IZIN: "bg-amber-50 text-amber-800 border-amber-200",
-  SAKIT: "bg-rose-50 text-rose-800 border-rose-200",
+  HADIR:
+    "border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-400/10 dark:text-emerald-200",
+  IZIN:
+    "border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-500/30 dark:bg-amber-400/10 dark:text-amber-200",
+  SAKIT:
+    "border-rose-200 bg-rose-50 text-rose-800 dark:border-rose-500/30 dark:bg-rose-400/10 dark:text-rose-200",
 };
 
 const attendanceOptions: AttendanceStatus[] = ["HADIR", "IZIN", "SAKIT"];
@@ -113,11 +116,11 @@ export default function DashboardRoute() {
   return (
     <>
       <div className="grid gap-6 md:grid-cols-2">
-        <div className="rounded-3xl bg-white p-6 shadow-sm">
+        <div className="rounded-3xl border border-zinc-100 bg-white/90 p-6 shadow-lg shadow-zinc-200/50 transition dark:border-zinc-800 dark:bg-zinc-900/70 dark:shadow-black/30">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-500">Status terakhir</p>
-              <h3 className="mt-1 text-2xl font-semibold text-slate-900">
+              <p className="text-sm text-zinc-500">Status terakhir</p>
+              <h3 className="mt-1 text-2xl font-semibold text-zinc-950 dark:text-zinc-50">
                 {isTodayStatusLoading
                   ? "Memuat..."
                   : lastStatus
@@ -131,19 +134,19 @@ export default function DashboardRoute() {
               </span>
             )}
           </div>
-          <p className="mt-4 text-sm text-slate-500">
+          <p className="mt-4 text-sm text-zinc-600 dark:text-zinc-400">
             Terakhir diperbarui: {isTodayStatusLoading ? "Memuat status..." : formatDate(lastDate)}
           </p>
           {todayStatusError && (
-            <p className="mt-3 rounded-2xl bg-rose-50 px-4 py-2 text-sm text-rose-700">
+            <p className="mt-3 rounded-2xl border border-rose-200/40 bg-rose-50/90 px-4 py-2 text-sm text-rose-700 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-200">
               {todayStatusError}
             </p>
           )}
         </div>
 
-        <div className="rounded-3xl bg-white p-6 shadow-sm">
-          <h3 className="text-xl font-semibold text-slate-900">Presensi Hari Ini</h3>
-          <p className="mt-1 text-sm text-slate-500">Pilih status kehadiran sesuai kondisi Anda.</p>
+        <div className="rounded-3xl border border-zinc-100 bg-white/90 p-6 shadow-lg shadow-zinc-200/50 transition dark:border-zinc-800 dark:bg-zinc-900/70 dark:shadow-black/30">
+          <h3 className="text-xl font-semibold text-zinc-950 dark:text-zinc-50">Presensi Hari Ini</h3>
+          <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">Pilih status kehadiran sesuai kondisi Anda.</p>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-3">
             {attendanceOptions.map((option) => (
@@ -154,10 +157,10 @@ export default function DashboardRoute() {
                 disabled={loadingStatus === option}
                 className={`rounded-2xl border px-4 py-3 text-sm font-semibold transition ${
                   option === "HADIR"
-                    ? "border-emerald-200 bg-emerald-50 text-emerald-700 hover:border-emerald-300"
+                    ? "border-emerald-200 bg-emerald-50 text-emerald-700 hover:border-emerald-300 dark:border-emerald-500/30 dark:bg-emerald-400/10 dark:text-emerald-200"
                     : option === "IZIN"
-                    ? "border-amber-200 bg-amber-50 text-amber-700 hover:border-amber-300"
-                    : "border-rose-200 bg-rose-50 text-rose-700 hover:border-rose-300"
+                    ? "border-amber-200 bg-amber-50 text-amber-700 hover:border-amber-300 dark:border-amber-500/30 dark:bg-amber-400/10 dark:text-amber-200"
+                    : "border-rose-200 bg-rose-50 text-rose-700 hover:border-rose-300 dark:border-rose-500/30 dark:bg-rose-400/10 dark:text-rose-200"
                 } disabled:cursor-not-allowed disabled:opacity-60`}
               >
                 {loadingStatus === option ? "Menyimpan..." : statusLabels[option]}
@@ -169,8 +172,8 @@ export default function DashboardRoute() {
             <p
               className={`mt-4 rounded-2xl px-4 py-3 text-sm ${
                 feedbackTone === "success"
-                  ? "bg-emerald-50 text-emerald-700"
-                  : "bg-rose-50 text-rose-700"
+                  ? "border border-emerald-200/40 bg-emerald-50/90 text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-400/10 dark:text-emerald-200"
+                  : "border border-rose-200/40 bg-rose-50/90 text-rose-700 dark:border-rose-500/30 dark:bg-rose-400/10 dark:text-rose-200"
               }`}
             >
               {feedback}

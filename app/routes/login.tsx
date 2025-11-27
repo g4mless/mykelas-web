@@ -46,33 +46,33 @@ export default function LoginRoute() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-100 flex items-center justify-center px-4 py-10">
-      <div className="w-full max-w-md rounded-3xl bg-white shadow-xl p-8 space-y-6">
+    <main className="min-h-screen bg-gradient-to-br from-zinc-50 via-zinc-100 to-zinc-200 dark:from-zinc-950 dark:via-zinc-900 dark:to-black flex items-center justify-center px-4 py-10 transition-colors">
+      <div className="w-full max-w-md rounded-3xl border border-zinc-200 bg-white/90 p-8 shadow-2xl shadow-zinc-200/60 backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/80 dark:shadow-black/40">
         <section>
           <p className="text-sm font-semibold uppercase tracking-widest text-sky-600">
             Klas Student Portal
           </p>
-          <h1 className="mt-2 text-3xl font-bold text-gray-900">Masuk</h1>
-          <p className="mt-2 text-gray-600">
+          <h1 className="mt-2 text-3xl font-bold text-zinc-950 dark:text-zinc-50">Masuk</h1>
+          <p className="mt-2 text-zinc-600 dark:text-zinc-300">
             Gunakan email sekolah untuk menerima kode OTP melalui Supabase.
           </p>
         </section>
 
         <form className="space-y-5" onSubmit={handleSubmit}>
           <label className="block space-y-2">
-            <span className="text-sm font-medium text-gray-700">Email</span>
+            <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">Email</span>
             <input
               type="email"
               required
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               placeholder="halo@mail.com"
-              className="w-full rounded-2xl border border-gray-200 px-4 py-3 text-base text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:ring-2 focus:ring-sky-200"
+              className="w-full rounded-2xl border border-zinc-200 bg-white/80 px-4 py-3 text-base text-zinc-900 placeholder:text-zinc-400 shadow-inner transition focus:border-sky-500 focus:ring-2 focus:ring-sky-500/30 dark:border-zinc-700 dark:bg-zinc-900/30 dark:text-zinc-100 dark:placeholder:text-zinc-500"
             />
           </label>
 
           {formError && (
-            <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">
+            <p className="rounded-2xl border border-red-200/40 bg-red-50/80 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200">
               {formError}
             </p>
           )}
@@ -80,15 +80,15 @@ export default function LoginRoute() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full rounded-2xl bg-sky-600 py-3 text-base font-semibold text-white transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-70"
+            className="w-full rounded-2xl bg-sky-600 py-3 text-base font-semibold text-white transition hover:bg-sky-500 disabled:cursor-not-allowed disabled:opacity-70 dark:bg-sky-500 dark:hover:bg-sky-400"
           >
             {isSubmitting ? "Mengirim..." : "Login"}
           </button>
         </form>
 
-        <p className="text-center text-sm text-gray-600">
+        <p className="text-center text-sm text-zinc-600 dark:text-zinc-300">
           Sudah menerima kode?
-          <Link to="/verify" className="ml-1 font-semibold text-sky-600 hover:underline">
+          <Link to="/verify" className="ml-1 font-semibold text-sky-600 hover:underline dark:text-sky-400">
             Verifikasi di sini
           </Link>
         </p>

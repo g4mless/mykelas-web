@@ -64,7 +64,7 @@ export default function ProfileRoute() {
 
   if (!student) {
     return (
-      <div className="rounded-3xl bg-white p-6 shadow-sm text-center text-slate-500">
+      <div className="rounded-3xl border border-zinc-100 bg-white/90 p-6 text-center text-zinc-600 shadow-lg shadow-zinc-200/60 dark:border-zinc-800 dark:bg-zinc-900/70 dark:text-zinc-300 dark:shadow-black/30">
         Data siswa belum tersedia.
       </div>
     );
@@ -190,33 +190,33 @@ export default function ProfileRoute() {
 
   return (
     <section className="space-y-6">
-      <div className="rounded-3xl bg-white p-6 shadow-sm space-y-4">
+      <div className="space-y-4 rounded-3xl border border-zinc-100 bg-white/90 p-6 shadow-lg shadow-zinc-200/60 dark:border-zinc-800 dark:bg-zinc-900/70 dark:shadow-black/30">
         <button
           type="button"
           onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-50"
         >
           <span aria-hidden>←</span>Kembali
         </button>
         <div>
-          <h2 className="text-2xl font-semibold text-slate-900">Profil</h2>
+          <h2 className="text-2xl font-semibold text-zinc-950 dark:text-zinc-50">Profil</h2>
         </div>
 
-        <div className="rounded-2xl border border-slate-100 p-4 flex flex-col gap-4 sm:flex-row sm:items-center">
+        <div className="flex flex-col gap-4 rounded-2xl border border-zinc-100 bg-white/70 p-4 sm:flex-row sm:items-center dark:border-zinc-800 dark:bg-zinc-900/40">
           <Avatar name={student.nama} src={previewUrl} size="lg" />
           <div className="flex-1 space-y-2">
             <button
               type="button"
               onClick={openDialog}
-              className="inline-flex items-center justify-center rounded-full bg-sky-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-700"
+              className="inline-flex items-center justify-center rounded-full bg-sky-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-500 dark:bg-sky-500 dark:hover:bg-sky-400"
             >
               Ubah Foto
             </button>
             {uploadError && (
-              <p className="rounded-2xl bg-rose-50 px-4 py-2 text-sm text-rose-700">{uploadError}</p>
+              <p className="rounded-2xl border border-rose-200/40 bg-rose-50/90 px-4 py-2 text-sm text-rose-700 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-200">{uploadError}</p>
             )}
             {uploadSuccess && (
-              <p className="rounded-2xl bg-emerald-50 px-4 py-2 text-sm text-emerald-700">{uploadSuccess}</p>
+              <p className="rounded-2xl border border-emerald-200/40 bg-emerald-50/90 px-4 py-2 text-sm text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-200">{uploadSuccess}</p>
             )}
           </div>
         </div>
@@ -229,7 +229,7 @@ export default function ProfileRoute() {
             navigate("/login", { replace: true });
           }}
           disabled={isSigningOut}
-          className="inline-flex items-center justify-center rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-rose-600 transition hover:bg-rose-50 disabled:cursor-not-allowed"
+          className="inline-flex items-center justify-center rounded-full border border-zinc-200 px-4 py-2 text-sm font-semibold text-rose-600 transition hover:bg-rose-500/10 disabled:cursor-not-allowed dark:border-zinc-700 dark:text-rose-300"
         >
           {isSigningOut ? "Keluar..." : "Keluar"}
         </button>
@@ -237,25 +237,28 @@ export default function ProfileRoute() {
 
       <div className="grid gap-4 md:grid-cols-2">
         {info.map(({ label, value }) => (
-          <article key={label} className="rounded-3xl bg-white p-5 shadow-sm">
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-400">{label}</p>
-            <p className="mt-2 text-lg font-medium text-slate-900">{value || "-"}</p>
+          <article
+            key={label}
+            className="rounded-3xl border border-zinc-100 bg-white/90 p-5 shadow shadow-zinc-200/60 dark:border-zinc-800 dark:bg-zinc-900/60 dark:shadow-black/20"
+          >
+            <p className="text-xs uppercase tracking-[0.3em] text-zinc-500 dark:text-zinc-400">{label}</p>
+            <p className="mt-2 text-lg font-medium text-zinc-950 dark:text-zinc-50">{value || "-"}</p>
           </article>
         ))}
       </div>
 
       {isDialogOpen && (
-        <div className="fixed inset-0 z-20 flex items-center justify-center bg-black/50 px-4">
-          <div className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-xl">
+        <div className="fixed inset-0 z-20 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
+          <div className="w-full max-w-lg rounded-3xl border border-zinc-200 bg-white/95 p-6 shadow-2xl shadow-black/30 dark:border-zinc-700 dark:bg-zinc-900">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-semibold text-slate-900">Ubah Foto Profil</h3>
-                <p className="text-sm text-slate-500">Pilih gambar lalu atur posisi sebelum menyimpan.</p>
+                <h3 className="text-lg font-semibold text-zinc-950 dark:text-zinc-50">Ubah Foto Profil</h3>
+                <p className="text-sm text-zinc-600 dark:text-zinc-400">Pilih gambar lalu atur posisi sebelum menyimpan.</p>
               </div>
               <button
                 type="button"
                 onClick={closeDialog}
-                className="text-slate-500 hover:text-slate-900"
+                className="text-zinc-500 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
                 aria-label="Tutup dialog"
               >
                 ✕
@@ -264,17 +267,17 @@ export default function ProfileRoute() {
 
             <div className="mt-4 space-y-4">
               <label className="block">
-                <span className="text-sm font-medium text-slate-700">Pilih Gambar</span>
+                <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">Pilih Gambar</span>
                 <input
                   type="file"
                   accept={ACCEPTED_TYPES.join(",")}
                   onChange={handleFileChange}
-                  className="mt-2 block w-full text-sm text-slate-600 file:mr-3 file:rounded-full file:border-0 file:bg-slate-100 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-slate-700"
+                  className="mt-2 block w-full text-sm text-zinc-600 file:mr-3 file:rounded-full file:border-0 file:bg-zinc-100 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-zinc-900 dark:text-zinc-300 dark:file:bg-zinc-800 dark:file:text-zinc-200"
                 />
               </label>
 
               {cropImageSrc ? (
-                <div className="relative h-64 w-full overflow-hidden rounded-2xl bg-slate-900/5">
+                <div className="relative h-64 w-full overflow-hidden rounded-2xl bg-zinc-900/5 dark:bg-zinc-800/50">
                   <Cropper
                     image={cropImageSrc}
                     crop={crop}
@@ -288,13 +291,13 @@ export default function ProfileRoute() {
                   />
                 </div>
               ) : (
-                <div className="flex h-64 items-center justify-center rounded-2xl border border-dashed border-slate-200 text-sm text-slate-500">
+                <div className="flex h-64 items-center justify-center rounded-2xl border border-dashed border-zinc-200 text-sm text-zinc-500 dark:border-zinc-700 dark:text-zinc-400">
                   Upload gambar untuk memulai pengeditan.
                 </div>
               )}
 
               {cropImageSrc && (
-                <label className="flex items-center gap-3 text-sm text-slate-600">
+                <label className="flex items-center gap-3 text-sm text-zinc-600 dark:text-zinc-300">
                   Zoom
                   <input
                     type="range"
@@ -312,7 +315,7 @@ export default function ProfileRoute() {
                 <button
                   type="button"
                   onClick={closeDialog}
-                  className="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-50"
+                  className="rounded-full border border-zinc-200 px-4 py-2 text-sm font-semibold text-zinc-600 transition hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800/80"
                 >
                   Batal
                 </button>
@@ -320,7 +323,7 @@ export default function ProfileRoute() {
                   type="button"
                   disabled={!cropImageSrc || !croppedAreaPixels || isUploading}
                   onClick={handleUpload}
-                  className="rounded-full bg-sky-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="rounded-full bg-sky-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-500 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-sky-500 dark:hover:bg-sky-400"
                 >
                   {isUploading ? "Menyimpan..." : "Simpan"}
                 </button>

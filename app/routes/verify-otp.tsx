@@ -69,32 +69,32 @@ export default function VerifyOtpRoute() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center px-4 py-10">
-      <div className="w-full max-w-md rounded-3xl bg-white shadow-2xl p-8 space-y-6">
+    <main className="min-h-screen bg-gradient-to-br from-zinc-50 via-zinc-100 to-zinc-200 dark:from-zinc-950 dark:via-zinc-900 dark:to-black flex items-center justify-center px-4 py-10 transition-colors">
+      <div className="w-full max-w-md rounded-3xl border border-zinc-200 bg-white/90 p-8 shadow-2xl shadow-zinc-200/60 backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/80 dark:shadow-black/40">
         <section>
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-purple-500">
             Verifikasi OTP
           </p>
-          <h1 className="mt-2 text-3xl font-bold text-gray-900">Masukkan Kode</h1>
-          <p className="mt-2 text-gray-600">
+          <h1 className="mt-2 text-3xl font-bold text-zinc-950 dark:text-zinc-50">Masukkan Kode</h1>
+          <p className="mt-2 text-zinc-600 dark:text-zinc-300">
             Kami telah mengirim kode 6 digit ke email Anda. Kode berlaku selama 5 menit.
           </p>
         </section>
 
         <form className="space-y-5" onSubmit={handleSubmit}>
           <label className="block space-y-2">
-            <span className="text-sm font-medium text-gray-700">Email</span>
+            <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">Email</span>
             <input
               type="email"
               required
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              className="w-full rounded-2xl border border-gray-200 px-4 py-3 text-base text-slate-900 placeholder:text-slate-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
+              className="w-full rounded-2xl border border-zinc-200 bg-white/80 px-4 py-3 text-base text-zinc-900 placeholder:text-zinc-400 transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 dark:border-zinc-700 dark:bg-zinc-900/30 dark:text-zinc-100 dark:placeholder:text-zinc-500"
             />
           </label>
 
           <label className="block space-y-2">
-            <span className="text-sm font-medium text-gray-700">Kode OTP</span>
+            <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">Kode OTP</span>
             <input
               inputMode="numeric"
               pattern="[0-9]{6}"
@@ -102,12 +102,12 @@ export default function VerifyOtpRoute() {
               required
               value={token}
               onChange={(event) => setToken(event.target.value.replace(/[^0-9]/g, ""))}
-              className="tracking-[0.5em] text-center text-2xl font-semibold w-full rounded-2xl border border-gray-200 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
+              className="tracking-[0.5em] text-center text-2xl font-semibold w-full rounded-2xl border border-zinc-200 bg-white/80 px-4 py-3 text-zinc-900 placeholder:text-zinc-400 transition focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 dark:border-zinc-700 dark:bg-zinc-900/30 dark:text-zinc-50 dark:placeholder:text-zinc-500"
             />
           </label>
 
           {formError && (
-            <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">
+            <p className="rounded-2xl border border-red-200/40 bg-red-50/80 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200">
               {formError}
             </p>
           )}
@@ -115,15 +115,15 @@ export default function VerifyOtpRoute() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full rounded-2xl bg-purple-600 py-3 text-base font-semibold text-white transition hover:bg-purple-700 disabled:cursor-not-allowed disabled:opacity-70"
+            className="w-full rounded-2xl bg-purple-600 py-3 text-base font-semibold text-white transition hover:bg-purple-500 disabled:cursor-not-allowed disabled:opacity-70 dark:bg-purple-500 dark:hover:bg-purple-400"
           >
             {isSubmitting ? "Memverifikasi..." : "Masuk"}
           </button>
         </form>
 
-        <p className="text-center text-sm text-gray-600">
+        <p className="text-center text-sm text-zinc-600 dark:text-zinc-300">
           Tidak menerima kode?
-          <Link to="/login" className="ml-1 font-semibold text-purple-600 hover:underline">
+          <Link to="/login" className="ml-1 font-semibold text-purple-600 hover:underline dark:text-purple-400">
             Kirim ulang
           </Link>
         </p>
