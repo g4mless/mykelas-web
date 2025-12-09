@@ -7,6 +7,7 @@ import { useStudent } from "../providers/student-provider";
 import type { Attendance, AttendanceStatus } from "../types/student";
 import { fetchTodayStatus } from "../lib/klas-api";
 import { useAuth } from "../providers/auth-provider";
+import { QrScanner } from "../components/qr-scanner";
 
 const statusLabels: Record<AttendanceStatus, string> = {
   HADIR: "Hadir",
@@ -36,7 +37,7 @@ const formatDate = (date?: string | null) => {
   }
 };
 
-export const meta = ({}: Route.MetaArgs) => {
+export const meta = ({ }: Route.MetaArgs) => {
   return [
     { title: "Beranda | Klas Student" },
     {
@@ -56,6 +57,7 @@ export default function DashboardRoute() {
   const [todayStatusError, setTodayStatusError] = useState<string | null>(null);
   const [isTodayStatusLoading, setIsTodayStatusLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isQrScannerOpen, setIsQrScannerOpen] = useState(false);
 
   const today = useMemo(
     () =>
@@ -125,8 +127,8 @@ export default function DashboardRoute() {
                 {isTodayStatusLoading
                   ? "Memuat..."
                   : lastStatus
-                  ? statusLabels[lastStatus]
-                  : "Belum Presensi"}
+                    ? statusLabels[lastStatus]
+                    : "Belum Presensi"}
               </h3>
             </div>
             {lastStatus && !isTodayStatusLoading && (
@@ -149,24 +151,31 @@ export default function DashboardRoute() {
           <h3 className="text-xl font-semibold text-zinc-950 dark:text-zinc-50">Presensi Hari Ini</h3>
           <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">Catat kehadiran Anda untuk hari ini.</p>
 
-          <div className="mt-6">
-             <button
-                type="button"
-                onClick={() => setIsDialogOpen(true)}
-                disabled={!!todayAttendance}
-                className="rounded-sm bg-zinc-900 px-6 py-2 text-sm font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-zinc-100 disabled:text-zinc-400 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200 dark:disabled:bg-zinc-800 dark:disabled:text-zinc-500"
-              >
-                {todayAttendance ? "Sudah Absensi" : "Isi Absensi"}
-              </button>
+          <div className="mt-6 flex gap-3">
+            <button
+              type="button"
+              onClick={() => setIsDialogOpen(true)}
+              disabled={!!todayAttendance}
+              className="rounded-sm bg-zinc-900 px-6 py-2 text-sm font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-zinc-100 disabled:text-zinc-400 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200 dark:disabled:bg-zinc-800 dark:disabled:text-zinc-500"
+            >
+              {todayAttendance ? "Sudah Absensi" : "Isi Absensi"}
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsQrScannerOpen(true)}
+              disabled={!!todayAttendance}
+              className="rounded-sm bg-blue-600 px-6 py-2 text-sm font-semibold text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:bg-zinc-100 disabled:text-zinc-400 dark:bg-blue-500 dark:hover:bg-blue-400 dark:disabled:bg-zinc-800 dark:disabled:text-zinc-500"
+            >
+              Scan QR
+            </button>
           </div>
 
           {feedback && (
             <p
-              className={`mt-4 rounded-sm px-4 py-3 text-sm ${
-                feedbackTone === "success"
+              className={`mt-4 rounded-sm px-4 py-3 text-sm ${feedbackTone === "success"
                   ? "border border-emerald-200/40 bg-emerald-50/90 text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-400/10 dark:text-emerald-200"
                   : "border border-rose-200/40 bg-rose-50/90 text-rose-700 dark:border-rose-500/30 dark:bg-rose-400/10 dark:text-rose-200"
-              }`}
+                }`}
             >
               {feedback}
             </p>
@@ -187,7 +196,7 @@ export default function DashboardRoute() {
                 ✕
               </button>
             </div>
-            
+
             <div className="grid gap-3">
               {attendanceOptions.map((option) => (
                 <button
@@ -195,19 +204,18 @@ export default function DashboardRoute() {
                   type="button"
                   onClick={() => handleAttendance(option)}
                   disabled={loadingStatus === option}
-                  className={`flex w-full items-center justify-center rounded-sm border px-4 py-4 text-base font-semibold transition ${
-                    option === "HADIR"
+                  className={`flex w-full items-center justify-center rounded-sm border px-4 py-4 text-base font-semibold transition ${option === "HADIR"
                       ? "border-emerald-200 bg-emerald-50 text-emerald-700 hover:border-emerald-300 dark:border-emerald-500/30 dark:bg-emerald-400/10 dark:text-emerald-200"
                       : option === "IZIN"
-                      ? "border-amber-200 bg-amber-50 text-amber-700 hover:border-amber-300 dark:border-amber-500/30 dark:bg-amber-400/10 dark:text-amber-200"
-                      : "border-rose-200 bg-rose-50 text-rose-700 hover:border-rose-300 dark:border-rose-500/30 dark:bg-rose-400/10 dark:text-rose-200"
-                  } disabled:cursor-not-allowed disabled:opacity-60`}
+                        ? "border-amber-200 bg-amber-50 text-amber-700 hover:border-amber-300 dark:border-amber-500/30 dark:bg-amber-400/10 dark:text-amber-200"
+                        : "border-rose-200 bg-rose-50 text-rose-700 hover:border-rose-300 dark:border-rose-500/30 dark:bg-rose-400/10 dark:text-rose-200"
+                    } disabled:cursor-not-allowed disabled:opacity-60`}
                 >
                   {loadingStatus === option ? "Menyimpan..." : statusLabels[option]}
                 </button>
               ))}
             </div>
-            
+
             <button
               type="button"
               onClick={() => setIsDialogOpen(false)}
@@ -217,6 +225,18 @@ export default function DashboardRoute() {
             </button>
           </div>
         </div>
+      )}
+
+      {isQrScannerOpen && (
+        <QrScanner
+          onClose={() => setIsQrScannerOpen(false)}
+          onSuccess={() => {
+            setIsQrScannerOpen(false);
+            loadTodayStatus();
+            setFeedback("Attendance Recorded! ✅");
+            setFeedbackTone("success");
+          }}
+        />
       )}
     </>
   );

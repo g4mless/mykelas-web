@@ -11,6 +11,7 @@ import type { Route } from "./+types/root";
 import "./app.css";
 import { AuthProvider } from "./providers/auth-provider";
 import { StudentProvider } from "./providers/student-provider";
+import { TeacherProvider } from "./providers/teacher-provider";
 import { ThemeProvider } from "./providers/theme-provider";
 
 export const links: Route.LinksFunction = () => [
@@ -48,9 +49,11 @@ export default function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <StudentProvider>
-          <Outlet />
-        </StudentProvider>
+        <TeacherProvider>
+          <StudentProvider>
+            <Outlet />
+          </StudentProvider>
+        </TeacherProvider>
       </AuthProvider>
     </ThemeProvider>
   );

@@ -8,4 +8,8 @@ export default [
     index("routes/dashboard.tsx"),
     route("profile", "routes/profile.tsx"),
   ]),
+  route("/teacher", "routes/teacher-protected.tsx", [
+    route("dashboard", "routes/teacher-dashboard.tsx"),
+    route("class/:classId", "routes/teacher-class-detail.tsx"),
+  ]),
 ] satisfies RouteConfig;

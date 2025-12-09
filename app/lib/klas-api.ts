@@ -6,6 +6,12 @@ import type {
   Student,
   TodayStatusResponse,
 } from "../types/student";
+import type {
+  ClassAttendance,
+  ClassInfo,
+  QrTokenResponse,
+  Teacher,
+} from "../types/teacher";
 import { KLAS_API_URL } from "./env";
 
 class KlasApiError extends Error {
@@ -95,6 +101,53 @@ export const uploadProfilePicture = (file: File, accessToken: string) => {
       body: formData,
     },
   );
+};
+
+// Teacher Auth
+export const loginTeacher = async (nuptk: string) => {
+  return request<{
+    access_token: string;
+    refresh_token: string;
+    teacher: Teacher;
+  }>("/auth/login/teacher", "", {
+    method: "POST",
+    body: JSON.stringify({ nuptk }),
+  });
+};
+
+// Teacher Data
+export const fetchTeacherClasses = async (accessToken: string) => {
+  return request<ClassInfo[]>("/teacher/classes", accessToken, {
+    method: "GET",
+  });
+};
+
+export const fetchClassAttendance = async (
+  classId: string,
+  accessToken: string,
+) => {
+  return request<ClassAttendance[]>(
+    `/teacher/attendances/today?class_id=${classId}`,
+    accessToken,
+    {
+      method: "GET",
+    },
+  );
+};
+
+// QR Features
+export const generateQrToken = async (classId: string, accessToken: string) => {
+  return request<QrTokenResponse>("/teacher/qr/generate", accessToken, {
+    method: "POST",
+    body: JSON.stringify({ class_id: classId }),
+  });
+};
+
+export const submitQrAttendance = async (token: string, accessToken: string) => {
+  return request<AttendanceResponse>("/absen/qr", accessToken, {
+    method: "POST",
+    body: JSON.stringify({ token }),
+  });
 };
 
 export { KlasApiError };

@@ -6,9 +6,10 @@ import { useEffect } from "react";
 import type { Route } from "./+types/protected";
 import { useAuth } from "../providers/auth-provider";
 import { useStudent } from "../providers/student-provider";
+import { useTeacher } from "../providers/teacher-provider";
 import { Avatar } from "../components/avatar";
 
-export const meta = ({}: Route.MetaArgs) => {
+export const meta = ({ }: Route.MetaArgs) => {
   return [
     { title: "Dashboard | Klas Student" },
     {
@@ -51,6 +52,7 @@ export default function ProtectedLayout() {
     refresh,
     avatarUrl,
   } = useStudent();
+  const { teacher } = useTeacher();
 
   useEffect(() => {
     if (!authLoading && !session) {
@@ -59,10 +61,14 @@ export default function ProtectedLayout() {
   }, [session, authLoading, navigate, location.pathname]);
 
   useEffect(() => {
+    if (teacher) {
+      navigate("/teacher/dashboard", { replace: true });
+      return;
+    }
     if (!studentLoading && session && !student && location.pathname !== "/link-student") {
       navigate("/link-student", { replace: true });
     }
-  }, [student, studentLoading, session, navigate, location.pathname]);
+  }, [student, studentLoading, session, navigate, location.pathname, teacher]);
 
   if (authLoading || studentLoading) {
     return <FullPageLoader />;
