@@ -15,7 +15,14 @@ export default function TeacherClassDetail() {
     useEffect(() => {
         if (session?.access_token && classId) {
             fetchClassAttendance(classId, session.access_token)
-                .then(setStudents)
+                .then((data) => {
+                    if (Array.isArray(data)) {
+                        setStudents(data);
+                    } else {
+                        console.error("Invalid attendance data format:", data);
+                        setStudents([]);
+                    }
+                })
                 .catch((err) => console.error(err))
                 .finally(() => setLoading(false));
         }
@@ -59,12 +66,12 @@ export default function TeacherClassDetail() {
                                 <td className="p-4">
                                     <span
                                         className={`px-2 py-1 rounded-full text-xs font-medium ${student.status === "HADIR"
-                                                ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-                                                : student.status === "IZIN"
-                                                    ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
-                                                    : student.status === "SAKIT"
-                                                        ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400"
-                                                        : "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-400"
+                                            ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
+                                            : student.status === "IZIN"
+                                                ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
+                                                : student.status === "SAKIT"
+                                                    ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400"
+                                                    : "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-400"
                                             }`}
                                     >
                                         {student.status || "ALPHA"}

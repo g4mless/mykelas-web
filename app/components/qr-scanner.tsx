@@ -15,7 +15,7 @@ export function QrScanner({ onClose, onSuccess }: QrScannerProps) {
     useEffect(() => {
         const scanner = new Html5QrcodeScanner(
             "reader",
-            { fps: 10, qrbox: { width: 250, height: 250 } },
+            { fps: 15, qrbox: undefined },
       /* verbose= */ false
         );
 
