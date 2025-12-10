@@ -1,4 +1,4 @@
-export type AttendanceStatus = "HADIR" | "IZIN" | "SAKIT";
+export type AttendanceStatus = "HADIR" | "IZIN" | "SAKIT" | "ALFA";
 
 export interface Attendance {
   id: number;

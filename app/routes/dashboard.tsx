@@ -13,6 +13,7 @@ const statusLabels: Record<AttendanceStatus, string> = {
   HADIR: "Hadir",
   IZIN: "Izin",
   SAKIT: "Sakit",
+  ALFA: "Alfa",
 };
 
 const statusStyles: Record<AttendanceStatus, string> = {
@@ -22,6 +23,8 @@ const statusStyles: Record<AttendanceStatus, string> = {
     "border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-500/30 dark:bg-amber-400/10 dark:text-amber-200",
   SAKIT:
     "border-rose-200 bg-rose-50 text-rose-800 dark:border-rose-500/30 dark:bg-rose-400/10 dark:text-rose-200",
+  ALFA:
+    "border-zinc-200 bg-zinc-50 text-zinc-600 dark:border-zinc-500/30 dark:bg-zinc-400/10 dark:text-zinc-400",
 };
 
 const attendanceOptions: AttendanceStatus[] = ["HADIR", "IZIN", "SAKIT"];
