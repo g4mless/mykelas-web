@@ -31,7 +31,7 @@ export default function TeacherClassDetail() {
     if (loading) return <div>Loading attendance...</div>;
 
     const presentCount = students.filter((s) => s.status === "HADIR").length;
-    const alphaCount = students.filter((s) => !s.status).length;
+    const totalDisplayed = students.length;
 
     return (
         <div className="space-y-6">
@@ -39,7 +39,7 @@ export default function TeacherClassDetail() {
                 <div>
                     <h2 className="text-2xl font-bold">Class Attendance</h2>
                     <p className="text-zinc-500">
-                        Present: {presentCount} | Alpha: {alphaCount}
+                        Present: {presentCount} | Total: {totalDisplayed}
                     </p>
                 </div>
                 <button
@@ -74,7 +74,7 @@ export default function TeacherClassDetail() {
                                                     : "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-400"
                                             }`}
                                     >
-                                        {student.status || "ALPHA"}
+                                        {student.status}
                                     </span>
                                 </td>
                                 <td className="p-4 text-zinc-500">

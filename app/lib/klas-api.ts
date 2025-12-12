@@ -122,17 +122,45 @@ export const fetchTeacherClasses = async (accessToken: string) => {
   });
 };
 
+interface AttendanceTodayApiResponse {
+  date: string;
+  class_id: string;
+  students: {
+    student: {
+      id: number;
+      nisn: string;
+      nama: string;
+      avatar_path: string | null;
+      avatar_url: string | null;
+    };
+    status: string;
+    is_present: boolean;
+    time?: string;
+  }[];
+}
+
 export const fetchClassAttendance = async (
   classId: string,
   accessToken: string,
-) => {
-  return request<ClassAttendance[]>(
+): Promise<ClassAttendance[]> => {
+  const response = await request<AttendanceTodayApiResponse>(
     `/teacher/attendances/today?class_id=${classId}`,
     accessToken,
     {
       method: "GET",
     },
   );
+
+  // Filter out ALPHA status and map to ClassAttendance interface
+  return response.students
+    .filter((entry) => entry.status !== "ALPHA")
+    .map((entry) => ({
+      student_id: entry.student.id,
+      student_name: entry.student.nama,
+      status: entry.status,
+      time: entry.time,
+      avatar_url: entry.student.avatar_url,
+    }));
 };
 
 // QR Features
