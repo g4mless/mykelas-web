@@ -14,8 +14,7 @@ export interface ClassInfo {
 export interface ClassAttendance {
   student_id: number;
   student_name: string;
-  status: string | null; // "HADIR", "IZIN", "SAKIT", or null (Alpha)
-  time?: string;
+  status: string; // "HADIR", "IZIN", "SAKIT"
   avatar_url?: string | null;
 }
 

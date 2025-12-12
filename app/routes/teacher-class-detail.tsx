@@ -56,7 +56,6 @@ export default function TeacherClassDetail() {
                         <tr>
                             <th className="p-4 font-medium">Name</th>
                             <th className="p-4 font-medium">Status</th>
-                            <th className="p-4 font-medium">Time</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
@@ -76,9 +75,6 @@ export default function TeacherClassDetail() {
                                     >
                                         {student.status}
                                     </span>
-                                </td>
-                                <td className="p-4 text-zinc-500">
-                                    {student.time ? new Date(student.time).toLocaleTimeString() : "-"}
                                 </td>
                             </tr>
                         ))}

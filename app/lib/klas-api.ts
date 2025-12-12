@@ -135,7 +135,6 @@ interface AttendanceTodayApiResponse {
     };
     status: string;
     is_present: boolean;
-    time?: string;
   }[];
 }
 
@@ -151,16 +150,13 @@ export const fetchClassAttendance = async (
     },
   );
 
-  // Filter out ALPHA status and map to ClassAttendance interface
-  return response.students
-    .filter((entry) => entry.status !== "ALPHA")
-    .map((entry) => ({
-      student_id: entry.student.id,
-      student_name: entry.student.nama,
-      status: entry.status,
-      time: entry.time,
-      avatar_url: entry.student.avatar_url,
-    }));
+  // Map to ClassAttendance interface, changing ALPHA to BELUM ABSEN
+  return response.students.map((entry) => ({
+    student_id: entry.student.id,
+    student_name: entry.student.nama,
+    status: entry.status === "ALPHA" ? "BELUM ABSEN" : entry.status,
+    avatar_url: entry.student.avatar_url,
+  }));
 };
 
 // QR Features
