@@ -42,21 +42,37 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     let active = true;
 
+    // Initial session load
     supabaseClient.auth.getSession().then(({ data }) => {
       if (!active) return;
       setSession(data.session ?? null);
       setIsLoading(false);
     });
 
+    // Listen to auth state changes
     const {
       data: { subscription },
     } = supabaseClient.auth.onAuthStateChange((_event, currentSession) => {
       setSession(currentSession);
     });
 
+    // Mobile browser: recover session when tab becomes visible again
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        // Re-check session when user returns to tab
+        supabaseClient.auth.getSession().then(({ data }) => {
+          if (!active) return;
+          setSession(data.session ?? null);
+        });
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
     return () => {
       active = false;
       subscription.unsubscribe();
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
 
