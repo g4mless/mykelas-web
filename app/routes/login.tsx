@@ -82,7 +82,7 @@ export default function LoginRoute() {
           <p className="mt-2 text-zinc-600 dark:text-zinc-300">
             {isTeacherMode
               ? "Masuk menggunakan NUPTK Anda."
-              : "Gunakan email sekolah untuk menerima kode OTP melalui Supabase."}
+              : "Gunakan email anda untuk menerima kode OTP melalui Supabase."}
           </p>
         </section>
 
