@@ -38,8 +38,6 @@ export function QrCodeGenerator({ classId, onClose }: QrCodeGeneratorProps) {
             });
         }, 1000);
 
-        // Actually, better logic:
-        // Set an interval to fetch every 55 seconds
         const refreshInterval = setInterval(fetchToken, 55000);
 
         return () => {
@@ -48,7 +46,6 @@ export function QrCodeGenerator({ classId, onClose }: QrCodeGeneratorProps) {
         };
     }, [classId, session]);
 
-    // Separate timer for display
     useEffect(() => {
         const timer = setInterval(() => {
             setTimeLeft((t) => (t > 0 ? t - 1 : 0));
