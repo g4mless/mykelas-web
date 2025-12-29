@@ -126,7 +126,7 @@ export default function TeacherDashboard() {
 
     const selectedClass = classes.find((c) => c.id.toString() === selectedClassId);
     const presentCount = students.filter((s) => s.status === "HADIR").length;
-    const belumAbsenCount = students.filter((s) => s.status === "BELUM ABSEN").length;
+    const belumAbsenCount = students.filter((s) => s.status === "Kosong").length;
 
     return (
         <div className="space-y-6">
@@ -179,7 +179,7 @@ export default function TeacherDashboard() {
                     <p className="text-3xl font-bold">{presentCount}</p>
                 </div>
                 <div className="bg-zinc-500 rounded-xl p-4 text-white shadow-lg">
-                    <p className="text-zinc-200 text-sm font-medium">Belum Absen</p>
+                    <p className="text-zinc-200 text-sm font-medium">Kosong</p>
                     <p className="text-3xl font-bold">{belumAbsenCount}</p>
                 </div>
                 <div className="bg-zinc-600 rounded-xl p-4 text-white shadow-lg">
@@ -281,7 +281,7 @@ export default function TeacherDashboard() {
                                         <span
                                             className={`px-3 py-1 rounded-full text-xs font-semibold ${student.status === "HADIR"
                                                 ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                                                : student.status === "BELUM ABSEN"
+                                                : student.status === "Kosong"
                                                     ? "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
                                                     : student.status === "IZIN"
                                                         ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"

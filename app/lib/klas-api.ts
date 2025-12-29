@@ -150,11 +150,11 @@ export const fetchClassAttendance = async (
     },
   );
 
-  // Map to ClassAttendance interface, changing ALPHA to BELUM ABSEN
+  // Map to ClassAttendance interface
   return response.students.map((entry) => ({
     student_id: entry.student.id,
     student_name: entry.student.nama,
-    status: entry.status === "ALPHA" ? "BELUM ABSEN" : entry.status,
+    status: entry.status === "ALPHA" ? "Kosong" : entry.status,
     avatar_url: entry.student.avatar_url,
   }));
 };
