@@ -174,4 +174,28 @@ export const submitQrAttendance = async (token: string, accessToken: string) => 
   });
 };
 
+export const markAsAlfa = async (
+  classId: string | number,
+  studentIds: number[],
+  accessToken: string,
+  date?: string,
+) => {
+  return request<{
+    message: string;
+    updated_count: number;
+    inserted_count: number;
+    updated_student_ids: number[];
+    inserted_student_ids: number[];
+    skipped_student_ids: number[];
+    date: string;
+  }>("/teacher/attendances/mark-alfa", accessToken, {
+    method: "POST",
+    body: JSON.stringify({
+      class_id: classId,
+      student_ids: studentIds,
+      date,
+    }),
+  });
+};
+
 export { KlasApiError };

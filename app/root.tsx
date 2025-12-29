@@ -45,6 +45,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+import { Toaster } from "sonner";
+
 export default function App() {
   return (
     <ThemeProvider>
@@ -52,6 +54,7 @@ export default function App() {
         <TeacherProvider>
           <StudentProvider>
             <Outlet />
+            <Toaster position="top-center" richColors />
           </StudentProvider>
         </TeacherProvider>
       </AuthProvider>

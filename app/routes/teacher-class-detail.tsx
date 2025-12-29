@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { fetchClassAttendance } from "../lib/klas-api";
+import { toast } from "sonner";
+import { fetchClassAttendance, markAsAlfa } from "../lib/klas-api";
 import { useAuth } from "../providers/auth-provider";
 import type { ClassAttendance } from "../types/teacher";
 import { QrCodeGenerator } from "../components/qr-code-generator";
@@ -11,6 +12,8 @@ export default function TeacherClassDetail() {
     const [students, setStudents] = useState<ClassAttendance[]>([]);
     const [loading, setLoading] = useState(true);
     const [showQr, setShowQr] = useState(false);
+    const [selectedStudents, setSelectedStudents] = useState<number[]>([]);
+    const [isMarking, setIsMarking] = useState(false);
 
     useEffect(() => {
         if (session?.access_token && classId) {
@@ -28,6 +31,52 @@ export default function TeacherClassDetail() {
         }
     }, [session, classId]);
 
+    const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.checked) {
+            setSelectedStudents(students.map((s) => s.student_id));
+        } else {
+            setSelectedStudents([]);
+        }
+    };
+
+    const handleSelectStudent = (id: number) => {
+        if (selectedStudents.includes(id)) {
+            setSelectedStudents(selectedStudents.filter((sId) => sId !== id));
+        } else {
+            setSelectedStudents([...selectedStudents, id]);
+        }
+    };
+
+
+
+    // ... existing imports
+
+    const handleMarkAlfa = async () => {
+        if (selectedStudents.length === 0) return;
+        if (!confirm(`Apakah Anda yakin ingin menandai ${selectedStudents.length} siswa sebagai ALFA?`)) return;
+        if (!session?.access_token || !classId) return;
+
+        setIsMarking(true);
+        try {
+            const result = await markAsAlfa(classId, selectedStudents, session.access_token);
+            setSelectedStudents([]); // Clear selection
+            toast.success(result.message);
+
+            // Reload student table to show changes instantly
+            setLoading(true);
+            const data = await fetchClassAttendance(classId, session.access_token);
+            if (Array.isArray(data)) {
+                setStudents(data);
+            }
+        } catch (error: any) {
+            console.error(error);
+            toast.error(error.message || "Gagal menandai ALFA");
+        } finally {
+            setIsMarking(false);
+            setLoading(false);
+        }
+    };
+
     if (loading) return <div>Loading attendance...</div>;
 
     const presentCount = students.filter((s) => s.status === "HADIR").length;
@@ -42,18 +91,37 @@ export default function TeacherClassDetail() {
                         Present: {presentCount} | Total: {totalDisplayed}
                     </p>
                 </div>
-                <button
-                    onClick={() => setShowQr(true)}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
-                >
-                    Generate QR
-                </button>
+                <div className="flex gap-2">
+                    {selectedStudents.length > 0 && (
+                        <button
+                            onClick={handleMarkAlfa}
+                            disabled={isMarking}
+                            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition disabled:opacity-50"
+                        >
+                            {isMarking ? "Processing..." : `Tandai ALFA (${selectedStudents.length})`}
+                        </button>
+                    )}
+                    <button
+                        onClick={() => setShowQr(true)}
+                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+                    >
+                        Generate QR
+                    </button>
+                </div>
             </div>
 
             <div className="bg-white dark:bg-zinc-900 rounded-lg shadow overflow-hidden">
                 <table className="w-full text-left">
                     <thead className="bg-zinc-50 dark:bg-zinc-800">
                         <tr>
+                            <th className="p-4 font-medium w-10">
+                                <input
+                                    type="checkbox"
+                                    className="rounded border-zinc-300"
+                                    checked={students.length > 0 && selectedStudents.length === students.length}
+                                    onChange={handleSelectAll}
+                                />
+                            </th>
                             <th className="p-4 font-medium">Name</th>
                             <th className="p-4 font-medium">Status</th>
                         </tr>
@@ -61,6 +129,14 @@ export default function TeacherClassDetail() {
                     <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
                         {students.map((student) => (
                             <tr key={student.student_id}>
+                                <td className="p-4">
+                                    <input
+                                        type="checkbox"
+                                        className="rounded border-zinc-300"
+                                        checked={selectedStudents.includes(student.student_id)}
+                                        onChange={() => handleSelectStudent(student.student_id)}
+                                    />
+                                </td>
                                 <td className="p-4">{student.student_name}</td>
                                 <td className="p-4">
                                     <span
@@ -82,9 +158,7 @@ export default function TeacherClassDetail() {
                 </table>
             </div>
 
-            {showQr && classId && (
-                <QrCodeGenerator classId={classId} onClose={() => setShowQr(false)} />
-            )}
+            {showQr && classId && <QrCodeGenerator classId={classId} onClose={() => setShowQr(false)} />}
         </div>
     );
 }

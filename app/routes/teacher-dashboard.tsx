@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { fetchClassAttendance, fetchTeacherClasses } from "../lib/klas-api";
+import { toast } from "sonner";
+import { fetchClassAttendance, fetchTeacherClasses, markAsAlfa } from "../lib/klas-api";
 import { useAuth } from "../providers/auth-provider";
 import type { ClassInfo, ClassAttendance } from "../types/teacher";
 import { QrCodeGenerator } from "../components/qr-code-generator";
@@ -13,6 +14,8 @@ export default function TeacherDashboard() {
     const [loadingClasses, setLoadingClasses] = useState(true);
     const [loadingAttendance, setLoadingAttendance] = useState(false);
     const [showQr, setShowQr] = useState(false);
+    const [selectedStudents, setSelectedStudents] = useState<number[]>([]);
+    const [isMarking, setIsMarking] = useState(false);
 
     // Fetch classes on mount
     useEffect(() => {
@@ -34,6 +37,7 @@ export default function TeacherDashboard() {
     useEffect(() => {
         if (accessToken && selectedClassId) {
             setLoadingAttendance(true);
+            setSelectedStudents([]); // Reset selection on class change
             fetchClassAttendance(selectedClassId, accessToken)
                 .then((data) => {
                     if (Array.isArray(data)) {
@@ -52,6 +56,7 @@ export default function TeacherDashboard() {
     const refreshAttendance = () => {
         if (accessToken && selectedClassId) {
             setLoadingAttendance(true);
+            setSelectedStudents([]); // Reset selection on refresh
             fetchClassAttendance(selectedClassId, accessToken)
                 .then((data) => {
                     if (Array.isArray(data)) {
@@ -62,6 +67,43 @@ export default function TeacherDashboard() {
                 })
                 .catch((err) => console.error(err))
                 .finally(() => setLoadingAttendance(false));
+        }
+    };
+
+    const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.checked) {
+            setSelectedStudents(students.map((s) => s.student_id));
+        } else {
+            setSelectedStudents([]);
+        }
+    };
+
+    const handleSelectStudent = (id: number) => {
+        if (selectedStudents.includes(id)) {
+            setSelectedStudents(selectedStudents.filter((sId) => sId !== id));
+        } else {
+            setSelectedStudents([...selectedStudents, id]);
+        }
+    };
+
+    const handleMarkAlfa = async () => {
+        if (selectedStudents.length === 0) return;
+        if (!confirm(`Apakah Anda yakin ingin menandai ${selectedStudents.length} siswa sebagai ALFA?`)) return;
+        if (!accessToken || !selectedClassId) return;
+
+        setIsMarking(true);
+        try {
+            const result = await markAsAlfa(selectedClassId, selectedStudents, accessToken);
+            setSelectedStudents([]); // Clear selection
+            toast.success(result.message);
+
+            // Reload student table to show changes instantly
+            refreshAttendance();
+        } catch (error: any) {
+            console.error(error);
+            toast.error(error.message || "Gagal menandai ALFA");
+        } finally {
+            setIsMarking(false);
         }
     };
 
@@ -105,18 +147,29 @@ export default function TeacherDashboard() {
                     </select>
                 </div>
 
-                <button
-                    onClick={() => setShowQr(true)}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium flex items-center gap-2"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <rect x="3" y="3" width="7" height="7" />
-                        <rect x="14" y="3" width="7" height="7" />
-                        <rect x="3" y="14" width="7" height="7" />
-                        <rect x="14" y="14" width="7" height="7" />
-                    </svg>
-                    Generate QR
-                </button>
+                <div className="flex gap-2">
+                    {selectedStudents.length > 0 && (
+                        <button
+                            onClick={handleMarkAlfa}
+                            disabled={isMarking}
+                            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium disabled:opacity-50"
+                        >
+                            {isMarking ? "Processing..." : `Tandai ALFA (${selectedStudents.length})`}
+                        </button>
+                    )}
+                    <button
+                        onClick={() => setShowQr(true)}
+                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium flex items-center gap-2"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <rect x="3" y="3" width="7" height="7" />
+                            <rect x="14" y="3" width="7" height="7" />
+                            <rect x="3" y="14" width="7" height="7" />
+                            <rect x="14" y="14" width="7" height="7" />
+                        </svg>
+                        Generate QR
+                    </button>
+                </div>
             </div>
 
             {/* Stats Cards */}
@@ -185,6 +238,14 @@ export default function TeacherDashboard() {
                     <table className="w-full text-left">
                         <thead className="bg-zinc-50 dark:bg-zinc-800/50">
                             <tr>
+                                <th className="p-4 w-10">
+                                    <input
+                                        type="checkbox"
+                                        className="rounded border-zinc-300"
+                                        checked={students.length > 0 && selectedStudents.length === students.length}
+                                        onChange={handleSelectAll}
+                                    />
+                                </th>
                                 <th className="p-4 font-medium text-zinc-600 dark:text-zinc-400">Student</th>
                                 <th className="p-4 font-medium text-zinc-600 dark:text-zinc-400">Status</th>
                             </tr>
@@ -192,6 +253,14 @@ export default function TeacherDashboard() {
                         <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
                             {students.map((student) => (
                                 <tr key={student.student_id} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition">
+                                    <td className="p-4">
+                                        <input
+                                            type="checkbox"
+                                            className="rounded border-zinc-300"
+                                            checked={selectedStudents.includes(student.student_id)}
+                                            onChange={() => handleSelectStudent(student.student_id)}
+                                        />
+                                    </td>
                                     <td className="p-4">
                                         <div className="flex items-center gap-3">
                                             {student.avatar_url ? (
