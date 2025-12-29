@@ -70,11 +70,40 @@ export const linkStudent = async (name: string, accessToken: string) => {
 export const submitAttendance = async (
   status: AttendanceStatus,
   accessToken: string,
+  attachmentPath?: string,
 ) => {
   return request<AttendanceResponse>("/absen", accessToken, {
     method: "POST",
-    body: JSON.stringify({ status }),
+    body: JSON.stringify({ status, attachment_path: attachmentPath }),
   });
+};
+
+export const getAttachmentUploadUrl = async (
+  filename: string,
+  accessToken: string,
+) => {
+  return request<{ path: string; upload_url: string }>(
+    "/absen/attachment-upload-url",
+    accessToken,
+    {
+      method: "POST",
+      body: JSON.stringify({ filename }),
+    },
+  );
+};
+
+export const uploadAttachmentFile = async (file: File, uploadUrl: string) => {
+  const response = await fetch(uploadUrl, {
+    method: "PUT",
+    body: file,
+    headers: {
+      "Content-Type": file.type,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to upload attachment file");
+  }
 };
 
 export const fetchTodayStatus = (accessToken: string) => {
@@ -135,6 +164,7 @@ interface AttendanceTodayApiResponse {
     };
     status: string;
     is_present: boolean;
+    attachment_url?: string | null;
   }[];
 }
 
@@ -156,6 +186,7 @@ export const fetchClassAttendance = async (
     student_name: entry.student.nama,
     status: entry.status === "ALPHA" ? "Kosong" : entry.status,
     avatar_url: entry.student.avatar_url,
+    attachment_url: entry.attachment_url,
   }));
 };
 

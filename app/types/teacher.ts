@@ -16,6 +16,7 @@ export interface ClassAttendance {
   student_name: string;
   status: string; // "HADIR", "IZIN", "SAKIT"
   avatar_url?: string | null;
+  attachment_url?: string | null;
 }
 
 export interface QrTokenResponse {

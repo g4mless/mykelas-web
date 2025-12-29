@@ -30,7 +30,7 @@ interface StudentContextValue {
   error: string | null;
   refresh: () => Promise<void>;
   linkStudent: (name: string) => Promise<void>;
-  submitAttendance: (status: AttendanceStatus) => Promise<AttendanceResponse>;
+  submitAttendance: (status: AttendanceStatus, attachmentPath?: string) => Promise<AttendanceResponse>;
   avatarUrl: string | null;
   avatarError: string | null;
   isAvatarLoading: boolean;
@@ -106,11 +106,11 @@ export const StudentProvider = ({
   );
 
   const handleAttendance = useCallback(
-    async (status: AttendanceStatus) => {
+    async (status: AttendanceStatus, attachmentPath?: string) => {
       if (!accessToken) {
         throw new Error("Missing access token");
       }
-      const response = await submitAttendance(status, accessToken);
+      const response = await submitAttendance(status, accessToken, attachmentPath);
       await loadStudent();
       return response;
     },

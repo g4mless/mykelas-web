@@ -5,6 +5,8 @@ export interface Attendance {
   status: AttendanceStatus;
   date: string;
   student_id: number;
+  attachment_path?: string | null;
+  attachment_url?: string | null;
 }
 
 export interface Student {

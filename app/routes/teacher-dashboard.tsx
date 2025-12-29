@@ -278,20 +278,36 @@ export default function TeacherDashboard() {
                                         </div>
                                     </td>
                                     <td className="p-4">
-                                        <span
-                                            className={`px-3 py-1 rounded-full text-xs font-semibold ${student.status === "HADIR"
-                                                ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                                                : student.status === "Kosong"
-                                                    ? "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
-                                                    : student.status === "IZIN"
-                                                        ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
-                                                        : student.status === "SAKIT"
-                                                            ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
-                                                            : "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-400"
-                                                }`}
-                                        >
-                                            {student.status}
-                                        </span>
+                                        <div className="flex items-center gap-2">
+                                            <span
+                                                className={`px-3 py-1 rounded-full text-xs font-semibold ${student.status === "HADIR"
+                                                    ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                                                    : student.status === "Kosong"
+                                                        ? "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
+                                                        : student.status === "IZIN"
+                                                            ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
+                                                            : student.status === "SAKIT"
+                                                                ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                                                                : "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-400"
+                                                    }`}
+                                            >
+                                                {student.status}
+                                            </span>
+                                            {student.attachment_url && (
+                                                <a
+                                                    href={student.attachment_url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-zinc-400 hover:text-blue-500 dark:text-zinc-500 dark:hover:text-blue-400"
+                                                    title="Lihat Lampiran"
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                                                        <polyline points="14 2 14 8 20 8" />
+                                                    </svg>
+                                                </a>
+                                            )}
+                                        </div>
                                     </td>
                                 </tr>
                             ))}
@@ -300,9 +316,11 @@ export default function TeacherDashboard() {
                 )}
             </div>
 
-            {showQr && selectedClassId && (
-                <QrCodeGenerator classId={selectedClassId} onClose={() => setShowQr(false)} />
-            )}
-        </div>
+            {
+                showQr && selectedClassId && (
+                    <QrCodeGenerator classId={selectedClassId} onClose={() => setShowQr(false)} />
+                )
+            }
+        </div >
     );
 }
